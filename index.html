@@ -158,12 +158,8 @@ label, input {
       <input type="text" id="name" name="name" required>
       <label for="email">Email</label>
       <input type="email" id="email" name="email" required>
-      <label for="phone">Телефон</label>
-<div style="display: flex;">
-  <span style="padding: 10px; background: #eee; border: 1px solid #ccc; border-radius: 8px 0 0 8px;">+380</span>
-  <input type="tel" id="phone" name="phone" maxlength="9" pattern="[0-9]{9}" required
-         style="flex: 1; padding: 10px; border: 1px solid #ccc; border-left: none; border-radius: 0 10px 10px 0;">
-});
+     <label for="phone">Телефон</label>
+<input type="text" id="phone" name="phone" required>
       <button type="submit">▶️ Почати</button>
     </form>
   </div>
@@ -246,11 +242,7 @@ label, input {
           <button onclick="location.reload()">🔁 Спробувати ще раз</button>
         `;
       }
-    }
-    const phoneInput = document.getElementById('phone');
-phoneInput.addEventListener('input', function () {
-  this.value = this.value.replace(/\D/g, '').slice(0, 9);
-});
+ 
   </script>
 </body>
 </html>
