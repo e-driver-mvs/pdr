@@ -192,21 +192,22 @@ label, input {
   </div>
 
   <script>
-    function handleStart(e) {
-      e.preventDefault();
-      const form = document.getElementById('contact-form');
-      const formData = new FormData(form);
-      fetch(form.action, {
-        method: form.method,
-        body: formData,
-        headers: { 'Accept': 'application/json' }
-      }).then(response => {
-        if (response.ok) {
-          document.getElementById('form-container').style.display = 'none';
-          document.getElementById('quiz').style.display = 'block';
-        }
-      });
+   function handleStart(e) {
+  e.preventDefault();
+  const form = document.getElementById('contact-form');
+  const formData = new FormData(form);
+  fetch(form.action, {
+    method: form.method,
+    body: formData,
+    headers: { 'Accept': 'application/json' }
+  }).then(response => {
+    if (response.ok) {
+      document.getElementById('form-container').style.display = 'none';
+      document.getElementById('intro').style.display = 'none'; // ← Ось ця стрічка
+      document.getElementById('quiz').style.display = 'block';
     }
+  });
+}
 
     let current = 0;
     let correct = 0;
