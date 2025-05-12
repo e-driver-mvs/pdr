@@ -149,20 +149,22 @@ label, input {
 </head>
 <body>
   <img src="logoKV.png" alt="Логотип Кабінет Водія" style="max-width: 200px; margin: 0 auto 20px;" />
-<div id="intro">
-  <h2>🚦 Перевір свої знання з ПДР</h2>
 
-  <div id="form-container">
-    <form id="contact-form" action="https://formspree.io/f/mblgebeb" method="POST" onsubmit="handleStart(event)">
-      <label for="name">Ім’я</label>
-      <input type="text" id="name" name="name" required>
-      <label for="email">Email</label>
-      <input type="email" id="email" name="email" required>
-      <label for="phone">Телефон</label>
-      <input type="text" id="phone" name="phone" required>
-      <button type="submit">▶️ Почати </button>
-    </form>
-  </div>
+  <div id="intro">
+    <h2>🚦 Перевір свої знання з ПДР</h2>
+
+    <div id="form-container">
+      <form id="contact-form" action="https://formspree.io/f/mblgebeb" method="POST" onsubmit="handleStart(event)">
+        <label for="name">Ім’я</label>
+        <input type="text" id="name" name="name" required>
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+        <label for="phone">Телефон</label>
+        <input type="text" id="phone" name="phone" required>
+        <button type="submit">▶️ Почати </button>
+      </form>
+    </div>
+  </div> <!-- ❗Закрили intro тут -->
 
   <div id="quiz">
     <div class="question active" data-answer="A">
@@ -172,6 +174,10 @@ label, input {
       <button onclick="checkAnswer('B')">У будь-якому</button>
       <button onclick="checkAnswer('C')">У жодному</button>
     </div>
+
+    <!-- інші питання -->
+    <div class="result" id="result"></div>
+  </div>
     <div class="question" data-answer="B">
       <img src="ua_1.3.svg" alt="Дорожня ситуація" style="width: 100%; max-width: 360px;" />
       <p><strong>Питання 2:</strong> Хто з водіїв, виконуючи зупинку, порушує Правила дорожнього руху?</p>
