@@ -160,6 +160,10 @@ label, input {
       <input type="email" id="email" name="email" required>
       <label for="phone">Телефон</label>
       <input type="text" id="phone" name="phone" required>
+  const phoneInput = document.getElementById('phone');
+phoneInput.addEventListener('input', function () {
+  this.value = this.value.replace(/\D/g, '').slice(0, 9);
+});
       <button type="submit">▶️ Почати</button>
     </form>
   </div>
