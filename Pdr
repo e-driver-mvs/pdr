@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+ <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Квіз Кабінету водія</title>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 30px;
+      background-color: #3D7D75;
+      color: white;
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 28px;
+      margin-bottom: 30px;
+    }
+
+    p {
+      font-size: 20px;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      margin: 0 auto 20px;
+      border-radius: 16px;
+    }
+
+    button {
+      padding: 12px;
+      background-color: #EAF3F1;
+      color: #2F4F4F;
+      font-weight: 500;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+      margin: 10px 0;
+      width: 100%;
+    }
+
+    button:hover {
+      background-color: #d7e7e2;
+      transform: scale(1.02);
+    }
+
+    #quiz { display: none; }
+    .question { display: none; }
+    .question.active { display: block; animation: fadeIn 0.5s ease-in-out; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .result {
+  display: none;
+  background: white;
+  color: #333;
+  padding: 30px;
+  border-radius: 12px;
+  text-align: center;
+  position: relative;
+  animation: fadeIn 0.5s ease-in-out; 
+}
+    .result.winner {
+      animation: pulse 2s infinite;
+      border: 2px solid gold;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7); }
+      70% { box-shadow: 0 0 10px 20px rgba(255, 215, 0, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); }
+    }
+
+    .fail-img {
+      width: 200px;
+      margin: 20px auto 10px;
+      animation: popIn 0.6s ease-out;
+    }
+
+   .prize {
+  width: 180px;
+  margin: 30px auto 0;
+  animation: bounceGlow 1.5s ease-in-out infinite;
+  animation-delay: 0s; 
+}
+
+    @keyframes bounceGlow {
+      0% { transform: translateY(0) scale(1); filter: brightness(1); }
+      25% { transform: translateY(-10px) scale(1.05); filter: brightness(1.2); }
+      50% { transform: translateY(0) scale(1); filter: brightness(1); }
+      75% { transform: translateY(-5px) scale(1.03); filter: brightness(1.1); }
+      100% { transform: translateY(0) scale(1); filter: brightness(1); }
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.2); opacity: 0; }
+      60% { transform: scale(1.1); opacity: 1; }
+      100% { transform: scale(1); }
+    }
+
+    #form-container {
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  margin-bottom: 30px;
+  box-sizing: border-box;
+}
+input, button, form {
+  box-sizing: border-box;
+}
+
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      color: #333;
+      font-weight: 500;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h2>🚦 Перевір свої знання з ПДР</h2>
+
+  <div id="form-container">
+    <form id="contact-form" action="https://formspree.io/f/mblgebeb" method="POST" onsubmit="handleStart(event)">
+      <label for="name">Ім’я</label>
+      <input type="text" id="name" name="name" required>
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required>
+      <label for="phone">Телефон</label>
+      <input type="text" id="phone" name="phone" required>
+      <button type="submit">▶️ Почати </button>
+    </form>
+  </div>
+
+  <div id="quiz">
+    <div class="question active" data-answer="A">
+      <img src="ua_3.22.svg" alt="Дорога" style="width: 100%; max-width: 500px;" />
+      <p><strong>Питання 1:</strong> У якому із зазначених місць Ви можете перетнути суцільну лінію дорожньої розмітки та зупинитися?</p>
+      <button onclick="checkAnswer('A')">Тільки Б</button>
+      <button onclick="checkAnswer('B')">У будь-якому</button>
+      <button onclick="checkAnswer('C')">У жодному</button>
+    </div>
+    <div class="question" data-answer="B">
+      <img src="ua_1.3.svg" alt="Дорожня ситуація" style="width: 100%; max-width: 360px;" />
+      <p><strong>Питання 2:</strong> Хто з водіїв, виконуючи зупинку, порушує Правила дорожнього руху?</p>
+      <button onclick="checkAnswer('A')">Водій жовтого автомобіля</button>
+      <button onclick="checkAnswer('B')">Водій червоного автомобіля</button>
+      <button onclick="checkAnswer('C')">Обидва водії</button>
+    </div>
+    <div class="question" data-answer="B">
+      <img src="ua_1.40.svg" alt="Таблички" style="width: 100%; max-width: 500px;" />
+      <p><strong>Питання 3:</strong> Встановлений з якою із зображених табличок дорожній знак діє в усі робочі дні?</p>
+      <button onclick="checkAnswer('A')">З табличкою 1</button>
+      <button onclick="checkAnswer('B')">З табличкою 2</button>
+      <button onclick="checkAnswer('C')">З табличкою 3</button>
+      <button onclick="checkAnswer('D')">З табличкою 4</button>
+      <button onclick="checkAnswer('E')">З табличкою 5</button>
+    </div>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    function handleStart(e) {
+      e.preventDefault();
+      const form = document.getElementById('contact-form');
+      const formData = new FormData(form);
+      fetch(form.action, {
+        method: form.method,
+        body: formData,
+        headers: { 'Accept': 'application/json' }
+      }).then(response => {
+        if (response.ok) {
+          document.getElementById('form-container').style.display = 'none';
+          document.getElementById('quiz').style.display = 'block';
+        }
+      });
+    }
+
+    let current = 0;
+    let correct = 0;
+    const questions = document.querySelectorAll('.question');
+
+    function checkAnswer(choice) {
+      const answer = questions[current].dataset.answer;
+      if (choice === answer) {
+        correct++;
+      }
+      questions[current].classList.remove('active');
+      current++;
+      if (current < questions.length) {
+        questions[current].classList.add('active');
+      } else {
+        showResult();
+      }
+    }
+
+    function showResult() {
+      const result = document.getElementById('result');
+      result.style.display = 'block';
+      if (correct === questions.length) {
+        result.classList.add('winner');
+        result.innerHTML = `
+          <h3>🎉 Точно знаєш ПДР! Бери приз!</h3>
+          <img src="prize.png" alt="Приз" class="prize" />
+        `;
+        confetti({ particleCount: 150, spread: 90, origin: { y: 0.6 } });
+      } else {
+        const loseMessages = [
+          "GPS втратив сигнал знань"
+        ];
+        const random = loseMessages[Math.floor(Math.random() * loseMessages.length)];
+        result.innerHTML = `
+          <h3>❌ Ой... не цього разу!</h3>
+          <img src="1_8.svg" class="fail-img" alt="Сумний котик" />
+          <p>${random}</p>
+          <button onclick="location.reload()">🔁 Спробувати ще раз</button>
+        `;
+      }
+    }
+  </script>
+</body>
+</html>
